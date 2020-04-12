@@ -1,7 +1,7 @@
 self.__precacheManifest = [
   {
-    "revision": "039bd5219cfb5c4a4a9f",
-    "url": "/nebuskins/static/js/main.054ee712.chunk.js"
+    "revision": "372960f0cb6827cff802",
+    "url": "/nebuskins/static/js/main.3adbc5c6.chunk.js"
   },
   {
     "revision": "14923bce4b04a8d4a01d",
@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/nebuskins/static/js/2.655ff361.chunk.js"
   },
   {
-    "revision": "f17595ca4c7021b705267daa211f7170",
+    "revision": "4827c0f882713751c3e294126f9336db",
     "url": "/nebuskins/index.html"
   }
 ];
