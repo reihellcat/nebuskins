@@ -11,4 +11,3 @@ if(platform() === IOS) {
     mVKMiniAppsScrollHelper(root); // Добавляем скролхелпер для Safari
 }
 ReactDOM.render(<App />, root); // Рендерим App.js
-
