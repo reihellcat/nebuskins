@@ -10,7 +10,7 @@ class Settings extends React.Component {
         this.state = {
             activePanel: 'settings', // Ставим начальную панель
             history: ['settings'], // Заносим начальную панель в массив историй.
-         // Если не придет тема - ставим эту по умолчанию.
+            scheme: 'bright_light' // Если не придет тема - ставим эту по умолчанию.
         };
     }
 

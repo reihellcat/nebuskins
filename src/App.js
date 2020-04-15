@@ -63,7 +63,7 @@ class App extends React.Component {
 		super(props);
 
 		this.state = {
-				scheme: "bright_light",
+				
         activeStory: 'feed',
     };
   }
