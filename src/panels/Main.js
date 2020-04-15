@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Card, CardGrid, Panel, PanelHeader, Group } from '@vkontakte/vkui';
+import { View, Card, CardGrid, Panel, PanelHeader, Group, Button, Div } from '@vkontakte/vkui';
 
 
 
@@ -10,34 +10,15 @@ class Main extends React.Component {
     
     render() {
         return(
-            <View activePanel="card">
-            <Panel id="card">
-                <CardGrid>
-                  <Card size="l">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="m">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="m">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="s">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="s">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="s">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                  <Card size="l">
-                    <div style={{ height: 96 }} />
-                  </Card>
-                </CardGrid>
-            </Panel>
-          </View>
-        );
+          <Div>
+         <PanelHeader>
+          Главная  
+</PanelHeader>
+<img src="https://sun9-63.userapi.com/c857020/v857020827/13946f/aMol-HoR2Fw.jpg" width="100%" height="100%" margintop="25px" alt="desc"/>
+<Button size="xl" mode="secondary" href="https://vk.com/nebulous">Перейти в группу</Button>
+    </Div>
+        )
+    
     }
 }
 

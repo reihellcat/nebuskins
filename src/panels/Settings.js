@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Card, CardGrid, Panel, PanelHeader, Group, Cell, Switch, Button } from '@vkontakte/vkui';
+import { View, Card, CardGrid, Panel, PanelHeader, Group, Cell, Switch, Button, Div } from '@vkontakte/vkui';
 import connect from '@vkontakte/vkui-connect'; // VK Connect
 import {ConfigProvider} from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css'; // Импортируем css
@@ -8,7 +8,9 @@ class Settings extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            scheme: "bright_light" // Если не придет тема - ставим эту по умолчанию.
+            activePanel: 'settings', // Ставим начальную панель
+            history: ['settings'], // Заносим начальную панель в массив историй.
+         // Если не придет тема - ставим эту по умолчанию.
         };
     }
 
@@ -18,7 +20,6 @@ class Settings extends React.Component {
                 this.setState({scheme: data.scheme})
             }
         })
-        //  Добавляем обработчик события изменения истории для работы аппаратных кнопок.
     }
 
     UpdateTheme() {
@@ -34,16 +35,15 @@ class Settings extends React.Component {
     render() {
         return(
             // scheme - это тема, которую мы ставим в приложением
-            <ConfigProvider scheme={this.state.scheme}> 
-            <View>
-            <Cell asideContent={<Switch />}>
+            <ConfigProvider isWebView={true} scheme={this.state.scheme}> 
+            <Div>
+            <Cell asideContent={<Switch />} onClick={() => this.UpdateTheme()}>
           Темная тема
         </Cell>
         <Button onClick={() => this.UpdateTheme()} size="xl" mode="secondary">Сменить тему на альтернативную</Button>
-            </View>
+        </Div>
             </ConfigProvider>
         );
     }
 }
-
 export default Settings;
