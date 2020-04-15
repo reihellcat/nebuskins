@@ -1,30 +1,36 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import connect from '@vkontakte/vk-connect';
 import View from '@vkontakte/vkui/dist/components/View/View';
+import ConfigProvider from '@vkontakte/vkui/dist/components/ConfigProvider/ConfigProvider';
 import '@vkontakte/vkui/dist/vkui.css';
-import { Tabbar, TabbarItem, Panel, PanelHeader, Button, Cell, Switch } from '@vkontakte/vkui';
-import Epic from '@vkontakte/vkui/dist/components/Epic/Epic.js';
-import Icon28SettingsOutline from '@vkontakte/icons/dist/28/settings_outline.js';
-import Icon28AddOutline from '@vkontakte/icons/dist/28/add_outline.js';
-import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline.js';
-import Icon24ShareOutline from '@vkontakte/icons/dist/24/share_outline.js';
+import { Panel, PanelHeader, Tabbar, TabbarItem, Epic } from '@vkontakte/vkui';
+import Icon28AddOutline from '@vkontakte/icons/dist/28/add_outline';
+import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
+import Icon28SettingsOutline from '@vkontakte/icons/dist/28/settings_outline';
 
+import Settings from './panels/Settings';
+import Main from './panels/Main';
 
 class App extends React.Component {
-  constructor (props) {
-      super(props);
+	constructor (props) {
+		super(props);
 
-      this.state = {
-        activeStory: 'feed'
-      };
-      this.onStoryChange = this.onStoryChange.bind(this);
-    }
-  
-    onStoryChange (e) {
-      this.setState({ activeStory: e.currentTarget.dataset.story })
-    }
-  render() {
-    return(
-      <Epic activeStory={this.state.activeStory} SetScheme={this.state.SetScheme} tabbar={
+		this.state = {
+				scheme: "bright_light",
+				activeStory: 'feed'
+		};
+
+
+
+}
+
+onStoryChange = (e) => {
+	this.setState({ activeStory: e.currentTarget.dataset.story })
+}
+
+    render () {
+      return (
+        <Epic activeStory={this.state.activeStory} scheme={this.state.scheme} tabbar={
           <Tabbar>
             <TabbarItem
               onClick={this.onStoryChange}
@@ -42,6 +48,7 @@ class App extends React.Component {
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'settings'}
               data-story="settings"
+              label="12"
               text="Настройки"
             ><Icon28SettingsOutline /></TabbarItem>
           </Tabbar>
@@ -49,8 +56,7 @@ class App extends React.Component {
           <View id="feed" activePanel="feed">
             <Panel id="feed">
               <PanelHeader>Главная</PanelHeader>
-              <img height="100%" width="100%" margintop="15px" src="https://sun9-63.userapi.com/c857020/v857020827/13946f/aMol-HoR2Fw.jpg"/>
-              <Button before={<Icon24ShareOutline/>} size="xl" mode="secondary" href="https://vk.com/nebulous">Перейти в группу</Button>
+							<Main />
             </Panel>
           </View>
           <View id="add_skin" activePanel="add_skin">
@@ -60,14 +66,12 @@ class App extends React.Component {
           </View>
           <View id="settings" activePanel="settings">
             <Panel id="settings">
-              <PanelHeader>Настройки</PanelHeader>
-              <Cell asideContent={<Switch disabled/>}>
-               Темная тема
-        </Cell>
+						<PanelHeader>Настройки</PanelHeader>
+							<Settings />
             </Panel>
           </View>
-      </Epic>
+        </Epic>
       )
     }
-  }
+}
   export default App;
