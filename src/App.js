@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import connect from '@vkontakte/vk-connect';
 import bridge from '@vkontakte/vk-bridge';
-import { View, Panel, PanelHeader, Epic, Tabbar, TabbarItem, Snackbar, Cell, Button, Avatar, ModalCard, ModalRoot, Div, Separator, InfoRow, Switch } from '@vkontakte/vkui';
+import { View, Panel, PanelHeader, ActionSheet, ActionSheetItem, Epic, Placeholder, Tabbar, TabbarItem, Snackbar, Cell, Button, Avatar, ModalCard, ModalRoot, CellButton, Div, Separator, InfoRow, Switch } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
+import {platform, IOS} from '@vkontakte/vkui';
 
 import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
 import Icon28AddSquareOutline from '@vkontakte/icons/dist/28/add_square_outline';
@@ -10,8 +11,16 @@ import Icon16Add from '@vkontakte/icons/dist/16/add';
 import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
 import Icon56MoneyTransferOutline from '@vkontakte/icons/dist/56/money_transfer_outline';
 import Icon24Flash from '@vkontakte/icons/dist/24/flash';
-import Icon28Profile from '@vkontakte/icons/dist/28/profile';
+import Icon16PaletteOutline from '@vkontakte/icons/dist/16/palette_outline';
 import Icon16Done from '@vkontakte/icons/dist/16/done';
+import Icon28Notifications from '@vkontakte/icons/dist/28/notifications';
+import Icon28ChevronRightOutline from '@vkontakte/icons/dist/28/chevron_right_outline';
+import Icon28NotificationDisableOutline from '@vkontakte/icons/dist/28/notification_disable_outline';
+import Icon24NotificationCheckOutline from '@vkontakte/icons/dist/24/notification_check_outline';
+import Icon56GalleryOutline from '@vkontakte/icons/dist/56/gallery_outline';
+import Icon32Gallery from '@vkontakte/icons/dist/32/gallery';
+import Icon28PictureStackOutline from '@vkontakte/icons/dist/28/picture_stack_outline';
+
 
 const blueBackground = {
 	backgroundColor: 'var(--accent)'
@@ -25,15 +34,15 @@ class App extends React.Component {
 		activeModal: null,
 		modalHistory: [],
 		text: '',
-      snackbar: null
+	  snackbar: null,
+	  scheme: "bright_light",
+	  popout: null
     };
 	
 
-	  this.openBase = this.openBase.bind(this);
-	  this.modalBack = () => {
-		this.setActiveModal(this.state.modalHistory[this.state.modalHistory.length - 2]);
-	  };
-	
+	  this.openTheme = this.openTheme.bind(this);
+	  this.openNotifications = this.openNotifications.bind(this);
+	  this.UpdateTheme = this.UpdateTheme.bind(this);
 
 	  this.onStoryChange = this.onStoryChange.bind(this);
 	}
@@ -63,26 +72,59 @@ class App extends React.Component {
 		  modalHistory
 		});
 	  };
-	  openBase () {
-		if (this.state.snackbar) return;
-		this.setState({ snackbar:
-		  <Snackbar
-			layout="vertical"
-			onClose={() => this.setState({ snackbar: null })}
-			before={<Avatar size={24} style={blueBackground}><Icon16Done fill="#fff" width={14} height={14} /></Avatar>}
-		  >
-			Уведомления о подкастах включены
-		  </Snackbar>
+	  openTheme () {
+	  this.setState({ popout:
+		<ActionSheet onClose={() => this.setState({ popout: null })}>
+		  <ActionSheetItem before={<Icon32Gallery width={28} height={28}/>} autoclose>
+			Тёмная
+		  </ActionSheetItem>
+	  <ActionSheetItem before={<Icon56GalleryOutline width={28} height={28}/>} autoclose>
+			Светлая
+		  </ActionSheetItem>
+		  {platform() === IOS && <ActionSheetItem autoclose mode="cancel">Закрыть</ActionSheetItem>}
+		</ActionSheet>
+	  });
+	}
+
+	openNotifications () {
+		this.setState({ popout:
+		  <ActionSheet onClose={() => this.setState({ popout: null })}>
+			<ActionSheetItem before={<Icon24NotificationCheckOutline width={28} height={28}/>} onClick={this.UpdateTheme} autoclose>
+			  Включить
+			</ActionSheetItem>
+			<ActionSheetItem before={<Icon28NotificationDisableOutline/>} onClick={this.UpdateTheme} autoclose>
+			  Отключить
+			</ActionSheetItem>
+			{platform() === IOS && <ActionSheetItem autoclose mode="cancel">Закрыть</ActionSheetItem>}
+		  </ActionSheet>
 		});
 	  }
-	  
+
+	  componentDidMount() {
+        connect.subscribe(({ detail: { type, data }}) => { // Подписываемся на события.
+			if (type === 'VKWebAppUpdateConfig') { // Получаем тему клиента.
+                this.setState({scheme: data.scheme})
+            }
+        })
+        window.addEventListener('popstate', () => this.goBack()); //  Добавляем обработчик события изменения истории для работы аппаратных кнопок.
+    }
+
+    UpdateTheme() {
+        if(this.state.scheme === "bright_light" || this.state.scheme === "client_light"){ // Если в стейте эти темы: 
+            this.setState({scheme: 'space_gray'}); // меняем тему на альтернативную.
+            connect.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#000"}); // Устанавливаем цвет статус бара на белый и экшен бара на черный.
+	} else if(this.state.scheme === "space_gray" || this.state.scheme === "client_dark") {
+            this.setState({scheme: 'bright_light'}); // меняем тему на альтернативную.
+            connect.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#fff"}); // Устанавливаем цвет статус бара на черный и экшен бара на белый.
+        }
+	}
 	
 
 	render () {
 		
   
 	  return (
-		<Epic activeStory={this.state.activeStory} tabbar={
+		<Epic activeStory={this.state.activeStory} scheme={this.state.scheme} tabbar={
 		  <Tabbar>
 			<TabbarItem
 			  onClick={this.onStoryChange}
@@ -104,7 +146,7 @@ class App extends React.Component {
 			><Icon28InfoOutline /></TabbarItem>
 		  </Tabbar>
 		}>
-		  <View id="feed" activePanel="feed">
+		  <View id="feed" scheme={this.state.scheme} activePanel="feed">
 			<Panel id="feed">
 			  <PanelHeader>Главная</PanelHeader>
 			  <Cell
@@ -117,24 +159,34 @@ class App extends React.Component {
 		  <View id="add_skin" activePanel="add_skin">
 			<Panel id="add_skin">
 			  <PanelHeader>Предложить</PanelHeader>
+			  <Div>
+          <Placeholder
+            icon={<Icon28PictureStackOutline width={128} height={128} />}
+            header="Предложить свой скин"
+			action={<Button size="l">Предложить скин</Button>}
+			>
+            Привет! В данном разделе ты можешь предложить свой собственный скин для каталога приложения!
+			Владелец каждого скина, который будет принят в каталог приложения получит от 2,500 до 5,000 
+			плазмы от администраторов сообщества Nebulous.
+          </Placeholder>
+		  </Div>
 			</Panel>
 		  </View>
-		  <View id="settings" activePanel="settings">
+		  <View popout={this.state.popout} id="settings" activePanel="settings">
 			<Panel id="settings">
 			  <PanelHeader>О нас</PanelHeader>
 			  <Div>
-				  <Cell>
-			<Button mode="tertiary" size="x1" before={<Icon24Flash width={28} height={28} />} href="https://vk.com/nebulous" >Группа ВКонтакте</Button>
-			  </Cell>
+			<CellButton mode="tertiary" size="x1" before={<Icon24Flash width={28} height={28} />} href="https://vk.com/nebulous" >Группа ВКонтакте</CellButton>
 			  </Div>
 			  <Separator/>
 			  <Div>
-			  <Cell before={<Icon28InfoOutline />} description="Версия 1.0 (alpha)">Информация</Cell>
+			  <Cell before={<Icon28InfoOutline />} description="Версия 1.0">Информация</Cell>
         </Div>
 		<Separator />
 		<Div>
-	<Cell before={<Icon28Profile />} asideContent={<Switch disabled />} description="Недоступно">Темная тема</Cell>
-			</Div>
+	<Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon16PaletteOutline width={28} height={28}/>} onClick={this.openTheme} description="Доступные темы: Тёмная, Светлая">Темы</Cell> 
+	<Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon28Notifications />} onClick={this.openNotifications} description="Будьте вкурсе всех событий!">Уведомления</Cell>
+			</Div> 
 			</Panel>
 			</View>
 		</Epic>
