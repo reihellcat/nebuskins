@@ -6,6 +6,7 @@ import connect from '@vkontakte/vk-connect';
 import bridge from '@vkontakte/vk-bridge';
 import {platform, IOS} from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
+import TestFeed from './TestFeed';
 
 import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
 import Icon24Flash from '@vkontakte/icons/dist/24/flash';
@@ -35,13 +36,14 @@ class Settings extends React.Component {
       }
    
         componentDidMount() {
-          connect.subscribe(({ detail: { type, data }}) => { // Подписываемся на события.
-              if (type === 'VKWebAppUpdateConfig') { // Получаем тему клиента.
+          connect.subscribe(({ detail: { type, data }}) => { 
+              if (type === 'VKWebAppUpdateConfig') {
                   this.setState({scheme: data.scheme})
               }
           })
       }
-   
+
+
       UpdateTheme() {
           if(this.state.scheme === "bright_light" || this.state.scheme === "client_light"){ // Если в стейте эти темы:
               this.setState({scheme: 'space_gray'}); // меняем тему на альтернативную.
@@ -83,7 +85,7 @@ class Settings extends React.Component {
 
 render() {
     return (
-<ConfigProvider scheme={this.state.scheme} >
+<ConfigProvider scheme={this.state.scheme}>
 <View popout={this.state.popout} id="settings" activePanel="settings" > 
 <Panel id="settings">
   <PanelHeader>О нас</PanelHeader>
@@ -99,6 +101,7 @@ render() {
 <Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon16PaletteOutline width={28} height={28}/>} onClick={this.openTheme} description="Доступные темы: Тёмная, Светлая">Темы</Cell>
 <Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon28Notifications />} description="Работают, но отключены">Уведомления</Cell>
 </Div>
+<TestFeed/>
 </Panel>
 </View>
 </ConfigProvider>

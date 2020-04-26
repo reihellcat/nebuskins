@@ -10,6 +10,8 @@ import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
 import Settings from './panels/Settings';
 import AddSkin from './panels/AddSkin';
 import Feed from './panels/Feed';
+import firebase from './firebase';
+
 
 
 class App extends React.Component {
@@ -20,39 +22,52 @@ class App extends React.Component {
         activeStory: 'feed',
         scheme: "bright_light",
         text: '',
+        activePanel: 'settings', // Ставим начальную панель
+        history: ['settings']
     };
-		this.onStoryChange = this.onStoryChange.bind(this);
+    this.onStoryChange = this.onStoryChange.bind(this);
 	}
  
     onStoryChange (e) {
       this.setState({ activeStory: e.currentTarget.dataset.story })
-    }
+    }   
+
+    
  
       componentDidMount() {
-        connect.subscribe(({ detail: { type, data }}) => { // Подписываемся на события.
-            if (type === 'VKWebAppUpdateConfig') { // Получаем тему клиента.
+        connect.subscribe(({ detail: { type, data }}) => { 
+            if (type === 'VKWebAppUpdateConfig') { 
                 this.setState({scheme: data.scheme})
             }
         })
     }
  
- 
 
- 
+
+    UpdateTheme() {
+      if(this.state.scheme === "bright_light" || this.state.scheme === "client_light"){ // Если в стейте эти темы:
+          this.setState({scheme: 'space_gray'}); // меняем тему на альтернативную.
+          connect.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#000"}); // Устанавливаем цвет статус бара на белый и экшен бара на черный.
+  } else if(this.state.scheme === "space_gray" || this.state.scheme === "client_dark") {
+          this.setState({scheme: 'bright_light'}); // меняем тему на альтернативную.
+          connect.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#fff"}); // Устанавливаем цвет статус бара на черный и экшен бара на белый.
+      }
+  }
        
     render () {
 			 
 			
  
       return (
-            <ConfigProvider scheme={this.state.scheme}>
-        <Epic activeStory={this.state.activeStory} tabbar={
+            <ConfigProvider scheme={this.onThemeChange}>
+        <Epic activeStory={this.state.activeStory} 
+                 tabbar={
           <Tabbar>
             <TabbarItem
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'feed'}
               data-story="feed"
-              text="Новости"
+              text="Главная"
             ><Icon28NewsfeedOutline /></TabbarItem>
             <TabbarItem
               onClick={this.onStoryChange}
@@ -68,9 +83,9 @@ class App extends React.Component {
             ><Icon28InfoOutline /></TabbarItem>
           </Tabbar>
         }>
-							<Feed id="feed" activePanel="feed" />
-							<AddSkin id="add_skin" activePanel="add_skin" />
-              <Settings id="settings" activePanel="settings" />
+							<Feed id="feed"  />
+							<AddSkin id="add_skin"  />
+              <Settings id="settings" this={this} scheme={this.onThemeChange} />
         </Epic>
     </ConfigProvider>  
     )

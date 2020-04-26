@@ -1,15 +1,24 @@
 import React from 'react';
 import bridge from '@vkontakte/vk-bridge';
 import '@vkontakte/vkui/dist/vkui.css';
-import { View, Panel, PanelHeader, Button, Cell, Avatar, Div, Placeholder, Separator } from '@vkontakte/vkui';
+import { View, Panel, PanelHeader, Button, Cell, Avatar, Div, Placeholder, Separator, Gallery, Group, Header, Counter, FormLayout } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
 import Icon16Add from '@vkontakte/icons/dist/16/add';
 import Icon24Smile from '@vkontakte/icons/dist/24/smile';
+import TestFeed from './TestFeed';
 
 
 class Feed extends React.Component {
+    constructor (props) {
 
+        super(props);
+  
+        this.state = {
+          slideIndex: 0
+        }
+      }
+    
 render() {
 
     return (
@@ -26,8 +35,8 @@ bottomContent={<Button before={<Icon16Add/>} onClick={() => bridge.send("VKWebAp
 <Placeholder
              action={<Button before={<Icon24Smile/>} href="https://vk.com/nebulous" size="l">Группа разработчиков</Button>}>
           <img src="https://vk.com/sticker/1-20227-256" />
-          <h4>Привет! К сожалению, здесь пока что ничего нет! На данный момент ты можешь поиграться только с темой приложения :(</h4>  
         </Placeholder>
+        <TestFeed />
         </Div>
 </Panel>
 </View>
