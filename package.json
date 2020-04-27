@@ -27,7 +27,7 @@
         "@vkontakte/vk-connect": "^1.5.5",
         "@vkontakte/vk-mini-apps-api": "^0.1.0",
         "@vkontakte/vk-miniapps-deploy": "0.0.10",
-        "@vkontakte/vkui": "^3.5.0",
+        "@vkontakte/vkui": "^3.7.0",
         "@vkontakte/vkui-connect": "^1.5.4",
         "@vkontakte/vkui-connect-mock": "^1.0.62",
         "babel-eslint": "^9.0.0",
