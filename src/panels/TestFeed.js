@@ -1,11 +1,10 @@
 import React from 'react';
 import firebase from 'firebase';
-import { Button, Div, List, Input } from '@vkontakte/vkui';
+import { Button, Div, Input, Card, CardGrid, Text, Separator } from '@vkontakte/vkui';
 import '@vkontakte/vkui/dist/vkui.css';
 
 function TestFeed() {
     const [skins, setSkins] = React.useState([])
-    const [newSkinNickname, setNewSkinNickname] = React.useState()
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -16,22 +15,14 @@ function TestFeed() {
         fetchData()
     }, [])
 
-    const onCreate = () => {
-        const db = firebase.firestore()
-        db.collection('skins').add({nickname: newSkinNickname})
-    }
-
     return (
-        <Div>
-            <Input value={newSkinNickname} disabled onChange={(e) => setNewSkinNickname(e.target.value) }/>
-            <Button disabled onClick={onCreate}>Создать</Button>
-        {skins.map(skin => (
-    <h1 key={skin.nickname}>{skin.nickname}</h1>
+     //   <Div> 
+            <Card>     
+            {skins.map(skin => (
+    <Text style={{ fontSize: 25, textAlign: 'left' }} key={skin.category} key={skin.player_id} key={skin.nickname}>Предложил: {skin.nickname} <br/>
+    ID игрока: {skin.player_id} <br/>Категория: {skin.category} </Text>
         ))}
-        {skins.map(skin => (
-    <h3 key={skin.player_id}>{skin.player_id}</h3>
-        ))}
-</Div>
+        </Card> 
     );
 }
 

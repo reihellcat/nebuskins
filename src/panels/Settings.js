@@ -101,7 +101,6 @@ render() {
 <Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon16PaletteOutline width={28} height={28}/>} onClick={this.openTheme} description="Доступные темы: Тёмная, Светлая">Темы</Cell>
 <Cell asideContent={<Icon28ChevronRightOutline />} before={<Icon28Notifications />} description="Работают, но отключены">Уведомления</Cell>
 </Div>
-<TestFeed/>
 </Panel>
 </View>
 </ConfigProvider>

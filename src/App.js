@@ -85,7 +85,7 @@ class App extends React.Component {
         }>
 							<Feed id="feed"  />
 							<AddSkin id="add_skin"  />
-              <Settings id="settings" this={this} scheme={this.onThemeChange} />
+              <Settings id="settings" />
         </Epic>
     </ConfigProvider>  
     )

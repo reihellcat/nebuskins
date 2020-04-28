@@ -1,5 +1,6 @@
 import React from 'react';
 import '@vkontakte/vkui/dist/vkui.css';
+import firebase from 'firebase';
 import { View, IS_PLATFORM_ANDROID, IS_PLATFORM_IOS, Input, Panel, File, Link, Checkbox, PanelHeader, Div, Select, Placeholder, Button, ModalRoot, PanelHeaderButton, ModalPage, ModalPageHeader, FormLayout } from '@vkontakte/vkui';
 
 import Icon28PictureStackOutline from '@vkontakte/icons/dist/28/picture_stack_outline';
@@ -7,7 +8,10 @@ import Icon24Done from '@vkontakte/icons/dist/24/done';
 import Icon24Cancel from '@vkontakte/icons/dist/24/cancel';
 import Icon24Camera from '@vkontakte/icons/dist/24/camera';
 
+import AddSkinForm from './AddSkinForm';
+
 const MODAL_PAGE_SUBMIT = 'add_skin_submit';
+
 
 class AddSkin extends React.Component {
   constructor(props) {
@@ -54,23 +58,12 @@ class AddSkin extends React.Component {
           header={
             <ModalPageHeader
               left={IS_PLATFORM_ANDROID && <PanelHeaderButton onClick={this.modalBack}><Icon24Cancel /></PanelHeaderButton>}
-              right={<PanelHeaderButton onClick={this.modalBack}>{IS_PLATFORM_IOS ? 'Готово' : <Icon24Done />}</PanelHeaderButton>}
+              right={<PanelHeaderButton autoSave onClick={this.modalBack}>{IS_PLATFORM_IOS ? 'Готово' : <Icon24Done />}</PanelHeaderButton>}
             >
               Предложить скин
             </ModalPageHeader>
           }> 
-          <FormLayout>
-            <Input maxLength="16" top="Введите ваш никнейм" placeholder="Введите никнейм" />
-            <Input maxLength="8" top="Введите ваш игровой ID" type="tel" placeholder="Введите ID" />
-            <Select top="Категория" placeholder="Выберите категорию скина">
-              <option value="d">Обычные скины</option>
-              <option value="a">Питомцы</option>
-              <option value="p">Частицы</option>
-            </Select>
-            <File top="Загрузите фото скина" before={<Icon24Camera />} size="l">Открыть галерею</File>
-            <Checkbox>Я согласен со всем, что вы <Link>там</Link> понаписали</Checkbox>
-            <Button size="xl">Отправить</Button>
-            </FormLayout>
+          <AddSkinForm/>
          </ModalPage>
         </ModalRoot>
    );

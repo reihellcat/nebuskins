@@ -1,48 +1,61 @@
 import React from 'react';
 import bridge from '@vkontakte/vk-bridge';
+import connect from '@vkontakte/vk-connect';
 import '@vkontakte/vkui/dist/vkui.css';
-import { View, Panel, PanelHeader, CardGrid, Button, Card, Cell, Avatar, Div, Placeholder, Separator, Gallery, Group, Header, Counter, FormLayout, Text } from '@vkontakte/vkui';
+import { Root, View, Panel, PanelHeader, Group, PanelHeaderBack, Text, Button, Div, PanelHeaderButton, Header } from '@vkontakte/vkui';
 import Icon16Add from '@vkontakte/icons/dist/16/add';
 import Icon24Smile from '@vkontakte/icons/dist/24/smile';
+// import MainFeed from './MainFeed';
+// import DefaultSkins from './DefaultSkins';
 import TestFeed from './TestFeed';
 
-
 class Feed extends React.Component {
-    constructor (props) {
-
-        super(props);
-  
-        this.state = {
-          slideIndex: 0
+    constructor(props) {
+     super(props);
+      
+          this.state = {
+            activeView: 'main'
+          }
+        }
+      
+        render() {
+          return (
+            <Root activeView={this.state.activeView}>
+              <View activePanel="main" id="main">
+                <Panel id="main">
+                  <PanelHeader>Главная</PanelHeader>
+                  <Header>Выберите категорию скина</Header>
+                  <Div style={{display: 'center' }}>
+      <Button size="xl" onClick={ () => this.setState({ activeView: 'def_skin' }) } style={{marginBottom: '10px', blockSize: 60 }} mode="primary"><Text style={{ fontWeight: 700, fontSize: 20 }}>Обычные скины</Text></Button>
+      <Button size="xl" onClick={ () => this.setState({ activeView: 'pets' }) } after={<Icon24Smile style={{ width: 40 }} />} style={{marginBottom: '10px', blockSize: 60 }} mode="primary"><Text style={{ fontWeight: 700, fontSize: 20 }}>Питомцы</Text></Button>
+      <Button size="xl" onClick={ () => this.setState({ activeView: 'particles' }) } style={{marginBottom: '10px', blockSize: 60  }} mode="primary"><Text style={{ fontWeight: 700, fontSize: 20 }}>Частицы</Text></Button>
+     </Div>
+                </Panel>
+              </View>
+              <View header activePanel="def_skin" id="def_skin">
+                <Panel id="def_skin">
+                  <PanelHeader left={<PanelHeaderBack onClick={ () => this.setState({ activeView: 'main' }) }/>} >Обычные скины</PanelHeader>
+                  <Group>
+                    <TestFeed />
+                  </Group>
+                </Panel>
+              </View>
+              <View header activePanel="pets" id="pets">
+                <Panel id="pets">
+                  <PanelHeader left={<PanelHeaderBack onClick={ () => this.setState({ activeView: 'main' }) }/>} >Питомцы</PanelHeader>
+                  <Group>
+                  </Group>
+                </Panel>
+              </View>
+               <View header activePanel="particles" id="particles">
+                 <Panel id="particles">
+                   <PanelHeader left={<PanelHeaderBack onClick={ () => this.setState({ activeView: 'main' }) }/>} >Частицы</PanelHeader>
+                   <Group>
+                   </Group>
+                 </Panel>
+               </View>
+            </Root>
+          )
         }
       }
-    
-render() { 
-
-    return (
-
-<View id="feed"  activePanel="feed">
-<Panel id="feed">
-  <PanelHeader>Главная</PanelHeader>
-  <Div style={{display: 'center' }}>
-  <Button size="xl" style={{marginBottom: '10px', backgroundColor: '#e8f1fb', blockSize: 70 }} mode="secondary"><Text style={{ color: '#3f8ae0', fontWeight: 700, textAlign: 'left', fontSize: 20 }}>Обычные скины</Text></Button>
-  <Button size="xl" after={<img src="https://image.flaticon.com/icons/svg/2767/2767984.svg" width="40px" height="40px" />} style={{marginBottom: '10px', backgroundColor: '#e1f8e8', blockSize: 70 }} mode="secondary"><Text style={{ color: '#08c648', fontWeight: 700, textAlign: 'left', fontSize: 20 }}>Питомцы</Text></Button>
-  <Button size="xl" style={{marginBottom: '10px', blockSize: 70, backgroundColor: '#f6e5f9' }} mode="secondary"><Text style={{ color: '#b52dd6', fontWeight: 700, textAlign: 'left', fontSize: 20 }}>Частицы</Text></Button>
-     </Div>
-  {/* <Cell
-size="l"
-description="Группа сервиса"
-before={<Avatar src="https://sun9-24.userapi.com/c856520/v856520080/13a615/MOxzZ-wuRFM.jpg"/>}
-bottomContent={<Button before={<Icon16Add/>} onClick={() => bridge.send("VKWebAppJoinGroup", {"group_id": 95380950})}disabled>Вступить</Button>} >Nebulous</Cell> */}
-<Div>
-<Placeholder
-             action={<Button before={<Icon24Smile/>} href="https://vk.com/nebulous" size="l">Группа разработчиков</Button>}>
-        </Placeholder>
-        <TestFeed />
-        </Div>
-</Panel>
-</View>
-    )
-}
-}
 export default Feed;
