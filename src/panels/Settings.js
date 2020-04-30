@@ -25,7 +25,7 @@ class Settings extends React.Component {
    
         this.state = {
           activeStory: 'settings',
-          scheme: "bright_light",
+          scheme: "space_gray",
           popout: null,
       };
      

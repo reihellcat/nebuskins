@@ -58,7 +58,7 @@ class AddSkin extends React.Component {
           header={
             <ModalPageHeader
               left={IS_PLATFORM_ANDROID && <PanelHeaderButton onClick={this.modalBack}><Icon24Cancel /></PanelHeaderButton>}
-              right={<PanelHeaderButton autoSave onClick={this.modalBack}>{IS_PLATFORM_IOS ? 'Готово' : <Icon24Done />}</PanelHeaderButton>}
+              right={<PanelHeaderButton  onClick={this.modalBack}> <Icon24Done /></PanelHeaderButton>}
             >
               Предложить скин
             </ModalPageHeader>

@@ -20,7 +20,7 @@ class App extends React.Component {
  
       this.state = {
         activeStory: 'feed',
-        scheme: "bright_light",
+        scheme: "space_gray",
         text: '',
         activePanel: 'settings', // Ставим начальную панель
         history: ['settings']
@@ -73,8 +73,9 @@ class App extends React.Component {
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'add_skin'}
               data-story="add_skin"
-              text="Предложить"
-            ><Icon28AddSquareOutline /></TabbarItem>
+              text="Предложить" >
+                <Icon28AddSquareOutline />
+            </TabbarItem>
             <TabbarItem
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'settings'}
