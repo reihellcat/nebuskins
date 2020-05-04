@@ -1,13 +1,13 @@
 {
-  "main.js": "/nebuskins/static/js/main.909748d5.chunk.js",
-  "main.js.map": "/nebuskins/static/js/main.909748d5.chunk.js.map",
+  "main.js": "/nebuskins/static/js/main.917eadea.chunk.js",
+  "main.js.map": "/nebuskins/static/js/main.917eadea.chunk.js.map",
   "runtime~main.js": "/nebuskins/static/js/runtime~main.fcb63abb.js",
   "runtime~main.js.map": "/nebuskins/static/js/runtime~main.fcb63abb.js.map",
   "static/css/2.3de6f8ac.chunk.css": "/nebuskins/static/css/2.3de6f8ac.chunk.css",
-  "static/js/2.a0b0a4f3.chunk.js": "/nebuskins/static/js/2.a0b0a4f3.chunk.js",
-  "static/js/2.a0b0a4f3.chunk.js.map": "/nebuskins/static/js/2.a0b0a4f3.chunk.js.map",
+  "static/js/2.4af20fcd.chunk.js": "/nebuskins/static/js/2.4af20fcd.chunk.js",
+  "static/js/2.4af20fcd.chunk.js.map": "/nebuskins/static/js/2.4af20fcd.chunk.js.map",
   "index.html": "/nebuskins/index.html",
-  "precache-manifest.dfd051eb5ea253f3d0c03a21e71a488a.js": "/nebuskins/precache-manifest.dfd051eb5ea253f3d0c03a21e71a488a.js",
+  "precache-manifest.0aa177a1ae28103ba1126e6c036fd690.js": "/nebuskins/precache-manifest.0aa177a1ae28103ba1126e6c036fd690.js",
   "service-worker.js": "/nebuskins/service-worker.js",
   "static/css/2.3de6f8ac.chunk.css.map": "/nebuskins/static/css/2.3de6f8ac.chunk.css.map"
 }
