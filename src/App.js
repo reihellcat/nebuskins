@@ -5,12 +5,13 @@ import '@vkontakte/vkui/dist/vkui.css';
  
 import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
 import Icon28AddSquareOutline from '@vkontakte/icons/dist/28/add_square_outline';
-import Icon28InfoOutline from '@vkontakte/icons/dist/28/info_outline';
+import Icon28Profile from '@vkontakte/icons/dist/28/profile';
 
-import Settings from './panels/Settings';
-import AddSkin from './panels/AddSkin';
-import Feed from './panels/Feed';
+import Profile from './panels/Profile/Profile';
+import AddSkin from './panels/AddSkin/AddSkin';
+import Feed from './panels/Feed/Feed';
 import firebase from './firebase';
+
 
 
 
@@ -20,12 +21,12 @@ class App extends React.Component {
  
       this.state = {
         activeStory: 'feed',
-        scheme: "space_gray",
+        scheme: 'space_gray',
         text: '',
-        activePanel: 'settings', // Ставим начальную панель
-        history: ['settings']
+        history: []
     };
     this.onStoryChange = this.onStoryChange.bind(this);
+    
 	}
  
     onStoryChange (e) {
@@ -40,19 +41,7 @@ class App extends React.Component {
                 this.setState({scheme: data.scheme})
             }
         })
-    }
- 
-
-
-    UpdateTheme() {
-      if(this.state.scheme === "bright_light" || this.state.scheme === "client_light"){ // Если в стейте эти темы:
-          this.setState({scheme: 'space_gray'}); // меняем тему на альтернативную.
-          connect.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#000"}); // Устанавливаем цвет статус бара на белый и экшен бара на черный.
-  } else if(this.state.scheme === "space_gray" || this.state.scheme === "client_dark") {
-          this.setState({scheme: 'bright_light'}); // меняем тему на альтернативную.
-          connect.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#fff"}); // Устанавливаем цвет статус бара на черный и экшен бара на белый.
       }
-  }
        
     render () {
 			 
@@ -67,26 +56,23 @@ class App extends React.Component {
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'feed'}
               data-story="feed"
-              text="Главная"
             ><Icon28NewsfeedOutline /></TabbarItem>
             <TabbarItem
               onClick={this.onStoryChange}
               selected={this.state.activeStory === 'add_skin'}
-              data-story="add_skin"
-              text="Предложить" >
+              data-story="add_skin" >
                 <Icon28AddSquareOutline />
             </TabbarItem>
             <TabbarItem
               onClick={this.onStoryChange}
-              selected={this.state.activeStory === 'settings'}
-              data-story="settings"
-              text="О нас"
-            ><Icon28InfoOutline /></TabbarItem>
+              selected={this.state.activeStory === 'profile'}
+              data-story="profile"
+            ><Icon28Profile /></TabbarItem>
           </Tabbar>
         }>
 							<Feed id="feed"  />
-							<AddSkin id="add_skin"  />
-              <Settings id="settings" />
+							<AddSkin id="add_skin" />
+              <Profile id="profile" />
         </Epic>
     </ConfigProvider>  
     )

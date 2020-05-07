@@ -1,6 +1,5 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import connect from "@vkontakte/vk-connect";
 import App from "./App";
 import bridge from '@vkontakte/vk-bridge';
 import mVKMiniAppsScrollHelper from '@vkontakte/mvk-mini-apps-scroll-helper';
