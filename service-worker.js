@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/nebuskins/precache-manifest.cbe73174ce31b5eaf8e5e5227bf63580.js"
+  "/nebuskins/precache-manifest.8b3e405dedcfd14be568d3f9504295d6.js"
 );
 
 workbox.clientsClaim();
