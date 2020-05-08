@@ -1,85 +1,86 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import bridge from '@vkontakte/vk-bridge';
+import {View, ConfigProvider} from '@vkontakte/vkui';
+import "@vkontakte/vkui/dist/vkui.css";
 import connect from '@vkontakte/vk-connect';
-import { Epic, Tabbar, TabbarItem, ConfigProvider } from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css';
- 
-import Icon28NewsfeedOutline from '@vkontakte/icons/dist/28/newsfeed_outline';
-import Icon28AddSquareOutline from '@vkontakte/icons/dist/28/add_square_outline';
-import Icon28Profile from '@vkontakte/icons/dist/28/profile';
 
-import Profile from './panels/Profile/Profile';
-import AddSkin from './panels/AddSkin/AddSkin';
-import Feed from './panels/Feed/Feed';
 import firebase from './firebase';
 
+import Home from './panels/NewApp/Home';
+import TestFeed from './panels/NewApp/TestFeed';
+import Settings from './panels/NewApp/Settings';
+import AddSkin from './panels/NewApp/AddSkin';
+import AddSkinForm from './panels/NewApp/AddSkinForm';
 
+const App = () => {
+	const [activePanel, setActivePanel] = useState('home');
+  const [fetchedUser, setUser] = useState(null);
+  const [scheme, SetScheme] = useState("space_gray");
 
+	useEffect(() => {
+		// bridge.subscribe(({ detail: { type, data }}) => {
+		// 	if (type === 'VKWebAppUpdateConfig') {
+		// 		const schemeAttribute = document.createAttribute('scheme');
+		// 		schemeAttribute.value = data.scheme ? data.scheme : 'client_light';
+		// 		document.body.attributes.setNamedItem(schemeAttribute);
+		// 	}
+		// });
+		async function fetchData() {
+			const user = await bridge.send('VKWebAppGetUserInfo');
+			setUser(user);
+		}
+		fetchData();
+  }, []);
 
-class App extends React.Component {
-    constructor (props) {
-      super(props);
- 
-      this.state = {
-        activeStory: 'feed',
-        scheme: 'space_gray',
-        text: '',
-        history: []
-    };
-    this.onStoryChange = this.onStoryChange.bind(this);
-    
-	}
- 
-    onStoryChange (e) {
-      this.setState({ activeStory: e.currentTarget.dataset.story })
-    }   
-
-    
- 
-      componentDidMount() {
-        connect.subscribe(({ detail: { type, data }}) => { 
-            if (type === 'VKWebAppUpdateConfig') { 
-                this.setState({scheme: data.scheme})
-            }
-        })
-      }
-       
-    render () {
-			 
-			
- 
-      return (
-            <ConfigProvider scheme={this.onThemeChange}>
-        <Epic activeStory={this.state.activeStory} 
-                 tabbar={
-          <Tabbar>
-            <TabbarItem
-              onClick={this.onStoryChange}
-              selected={this.state.activeStory === 'feed'}
-              data-story="feed"
-            ><Icon28NewsfeedOutline /></TabbarItem>
-            <TabbarItem
-              onClick={this.onStoryChange}
-              selected={this.state.activeStory === 'add_skin'}
-              data-story="add_skin" >
-                <Icon28AddSquareOutline />
-            </TabbarItem>
-            <TabbarItem
-              onClick={this.onStoryChange}
-              selected={this.state.activeStory === 'profile'}
-              data-story="profile"
-            ><Icon28Profile /></TabbarItem>
-          </Tabbar>
-        }>
-							<Feed id="feed"  />
-							<AddSkin id="add_skin" />
-              <Profile id="profile" />
-        </Epic>
-    </ConfigProvider>  
-    )
+  useEffect(() => {
+    bridge.subscribe(({ detail: { type, data }}) => {
+    if (type === 'VKWebAppUpdateConfig') {
+      SetScheme(data.scheme)
     }
-  }
+  });
+  }, []);
+
+
+  function UpdateTheme() {
+    if(scheme === "bright_light" || scheme === "client_light") {
+      SetScheme('space_gray');
+      connect.send("VKWebAppSetViewSettings", {"status_bar_style": "light", "action_bar_color": "#000"});
+    }
+    else if(scheme === "space_gray" || scheme === "client_dark"){
+      SetScheme('bright_light');
+      connect.send("VKWebAppSetViewSettings", {"status_bar_style": "dark", "action_bar_color": "#fff"});
+    }
+}
+
+   const [main_skin, setSkins] = React.useState([])
+
+    React.useEffect(() => {
+        const fetchData = async () => {
+            const db = firebase.firestore()
+            const data = await db.collection("skins").get()
+            setSkins(data.docs.map(doc => doc.data()))
+        }
+        fetchData()
+    }, [])
+  
+
+
+
+	const go = e => {
+		setActivePanel(e.currentTarget.dataset.to);
+	};
+
+	return (
+    <ConfigProvider scheme={scheme} >
+		<View activePanel={activePanel}>
+			<Home id='home' fetchedUser={fetchedUser} go={go} />
+			<TestFeed id='def_skins' main_skin={main_skin} go={go} />
+      <Settings id="settings" UpdateTheme={UpdateTheme} fetchedUser={fetchedUser} go={go} />
+      <AddSkin id="add_skin" go={go}/>
+      <AddSkinForm id="add_skin_form"   go={go} />
+		</View>
+    </ConfigProvider>
+	);
+}
+
 export default App;
-
-
-
-
