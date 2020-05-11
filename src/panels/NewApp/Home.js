@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Panel, PanelHeader, Button, CellButton, Group, Cell, Div, Avatar, Header, PanelHeaderButton, Text} from '@vkontakte/vkui';
+import bridge from '@vkontakte/vk-bridge';
+import {Panel, Button, PanelHeader, Tappable, CellButton, Group, Cell, Avatar, Header, PanelHeaderButton} from '@vkontakte/vkui';
 import "@vkontakte/vkui/dist/vkui.css";
 
 
@@ -11,31 +12,37 @@ import Icon24Gallery from '@vkontakte/icons/dist/24/gallery';
 import Icon24FavoriteOutline from '@vkontakte/icons/dist/24/favorite_outline';
 import Icon28WriteOutline from '@vkontakte/icons/dist/28/write_outline';
 
-const Home = ({ id, go, fetchedUser }) => (
+const Home = ({ id, go }) => (
 	<Panel id={id}>
+		<Tappable onDoubleClickCapture={go} data-to="settings" >
 		<PanelHeader left={<PanelHeaderButton onClick={go} data-to="settings" ><Icon24Settings/></PanelHeaderButton>}>Каталог скинов</PanelHeader>
-		{fetchedUser &&
+		</Tappable>
 		<Group title="User Data Fetched with VK Bridge">
-			<Cell
-				before={fetchedUser.photo_200 ? <Avatar src={fetchedUser.photo_200}/> : null}
-				description="Добро пожаловать!"
-			>
-				{`${fetchedUser.first_name} ${fetchedUser.last_name}`}
-			</Cell>
-		</Group>}
+		<Cell
+                  before={<Avatar src="https://sun9-40.userapi.com/c855032/v855032297/ea70/sfIJ0RABti0.jpg" size={64} />}
+                  size="l"
+                  description="Сообщество игры"
+                  bottomContent={
+                    <div style={{ display: 'flex' }}>
+                      <Button disabled onClick={bridge.send("VKWebAppJoinGroup", {"group_id": 95380950})} size="m">Подписаться</Button>
+                    </div>
+                  }
+                >
+                  Nebulous</Cell>
+		</Group>
 
-		<Group title="Navigation Example">
+		{/* <Group title="Navigation Example">
 			<Div>
-				<Button disabled size="xl" level="2" onClick={go} data-to="persik">
+				<Button  size="xl" level="2" onClick={go} data-to="persik">
 					Пока ничего не делает
 				</Button>
 			</Div>
-		</Group>
+		</Group> */}
     <Group header={<Header mode="secondary">Выберите категорию</Header>}>
       <CellButton onClick={go} data-to="def_skins" before={<Icon24Gallery />}>Обычные скины</CellButton>
-      <CellButton before={<Icon28GhostOutline width={24} height={24} />}>Питомцы</CellButton>
-      <CellButton before={<Icon24FavoriteOutline />}>Частицы</CellButton>
-	  <CellButton before={<Icon24Attachments />}>Собственный фон</CellButton>
+      <CellButton onClick={go} data-to="pets" before={<Icon28GhostOutline width={24} height={24} />}>Питомцы</CellButton>
+      <CellButton disabled before={<Icon24FavoriteOutline />}>Частицы</CellButton>
+	  <CellButton onClick={go} data-to="back_theme" before={<Icon24Attachments />}>Собственный фон</CellButton>
     </Group>
 	<Group>
       <CellButton onClick={go} data-to="add_skin" before={<Icon28WriteOutline  width={24} height={24} />}>Предложить скин</CellButton>
@@ -46,11 +53,6 @@ const Home = ({ id, go, fetchedUser }) => (
 Home.propTypes = {
 	id: PropTypes.string.isRequired,
 	go: PropTypes.func.isRequired,
-	fetchedUser: PropTypes.shape({
-		photo_200: PropTypes.string,
-		first_name: PropTypes.string,
-		last_name: PropTypes.string,
-	}),
 };
 
 export default Home;

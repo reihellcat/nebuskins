@@ -11,11 +11,14 @@ import TestFeed from './panels/NewApp/TestFeed';
 import Settings from './panels/NewApp/Settings';
 import AddSkin from './panels/NewApp/AddSkin';
 import AddSkinForm from './panels/NewApp/AddSkinForm';
+import Pets from './panels/NewApp/Pets';
+import BackTheme from './panels/NewApp/BackTheme';
 
 const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
   const [fetchedUser, setUser] = useState(null);
   const [scheme, SetScheme] = useState("space_gray");
+  const [main_skin, setSkins] = React.useState([])
 
 	useEffect(() => {
 		// bridge.subscribe(({ detail: { type, data }}) => {
@@ -26,8 +29,8 @@ const App = () => {
 		// 	}
 		// });
 		async function fetchData() {
-			const user = await bridge.send('VKWebAppGetUserInfo');
-			setUser(user);
+      const user = await bridge.send('VKWebAppGetUserInfo');
+      setUser(user);
 		}
 		fetchData();
   }, []);
@@ -52,7 +55,6 @@ const App = () => {
     }
 }
 
-   const [main_skin, setSkins] = React.useState([])
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -73,11 +75,13 @@ const App = () => {
 	return (
     <ConfigProvider scheme={scheme} >
 		<View activePanel={activePanel}>
-			<Home id='home' fetchedUser={fetchedUser} go={go} />
+			<Home id='home' go={go} />
 			<TestFeed id='def_skins' main_skin={main_skin} go={go} />
       <Settings id="settings" UpdateTheme={UpdateTheme} fetchedUser={fetchedUser} go={go} />
       <AddSkin id="add_skin" go={go}/>
-      <AddSkinForm id="add_skin_form"   go={go} />
+      <AddSkinForm id="add_skin_form" fetchedUser={fetchedUser}  go={go} />
+      <Pets id="pets" go={go} />
+      <BackTheme id="back_theme" go={go} />
 		</View>
     </ConfigProvider>
 	);

@@ -1,7 +1,7 @@
 import React from 'react';
 import firebase from 'firebase';
 import PropTypes from 'prop-types';
-import {Avatar, Group, Header, Switch, PanelHeader, Panel, Cell, PanelHeaderBack, CellButton } from '@vkontakte/vkui';
+import {Avatar, Group, Header, PanelHeader, Panel, Cell, PanelHeaderBack, CellButton } from '@vkontakte/vkui';
 import "@vkontakte/vkui/dist/vkui.css";
 
 import Icon24Flash from '@vkontakte/icons/dist/24/flash';
