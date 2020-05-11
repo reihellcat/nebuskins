@@ -24,8 +24,8 @@ function AddSkinForm({ id, go, fetchedUser }) {
 const onCreate = () => {
   const db = firebase.firestore()
   db.collection('skins').doc(newPlayerID).set({nickname: newSkinNickname, player_id: newPlayerID,
-                                              category: newCategory, user:`${fetchedUser.first_name} ${fetchedUser.last_name}`, user_id:`${fetchedUser.id}`})
-}
+  category: newCategory, user:`${fetchedUser.first_name} ${fetchedUser.last_name}`, user_id:`${fetchedUser.id}`})
+  }
   return(
 <Panel id={id}>
 		<PanelHeader left={<PanelHeaderBack onClick={go} data-to="add_skin"/>}>Предложить</PanelHeader>

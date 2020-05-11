@@ -19,6 +19,7 @@ const App = () => {
   const [fetchedUser, setUser] = useState(null);
   const [scheme, SetScheme] = useState("space_gray");
   const [main_skin, setSkins] = React.useState([])
+  const [counter, setCounter] = useState(0);
 
 	useEffect(() => {
 		// bridge.subscribe(({ detail: { type, data }}) => {
@@ -65,17 +66,27 @@ const App = () => {
         fetchData()
     }, [])
   
-
+    useEffect(() => {
+      if(counter === 10) {
+        setActivePanel('pets');
+          setCounter(counter === 0)
+          console.log('Ура, получилось.....')
+      }
+    }, [counter])
 
 
 	const go = e => {
 		setActivePanel(e.currentTarget.dataset.to);
-	};
+  };
+  
+  const onAdmin = e => {
+    setCounter(counter => counter + 1)
+  }
 
 	return (
     <ConfigProvider scheme={scheme} >
 		<View activePanel={activePanel}>
-			<Home id='home' go={go} />
+			<Home id='home' onAdmin={onAdmin} go={go} />
 			<TestFeed id='def_skins' main_skin={main_skin} go={go} />
       <Settings id="settings" UpdateTheme={UpdateTheme} fetchedUser={fetchedUser} go={go} />
       <AddSkin id="add_skin" go={go}/>

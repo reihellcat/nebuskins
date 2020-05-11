@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import bridge from '@vkontakte/vk-bridge';
-import {Panel, Button, PanelHeader, Tappable, CellButton, Group, Cell, Avatar, Header, PanelHeaderButton} from '@vkontakte/vkui';
+import {Panel, Button, PanelHeader, CellButton, Group, Cell, Avatar, Header, PanelHeaderButton} from '@vkontakte/vkui';
 import "@vkontakte/vkui/dist/vkui.css";
+
 
 
 import Icon28GhostOutline from '@vkontakte/icons/dist/28/ghost_outline';
@@ -12,12 +13,10 @@ import Icon24Gallery from '@vkontakte/icons/dist/24/gallery';
 import Icon24FavoriteOutline from '@vkontakte/icons/dist/24/favorite_outline';
 import Icon28WriteOutline from '@vkontakte/icons/dist/28/write_outline';
 
-const Home = ({ id, go }) => (
+const Home = ({ id, go, onAdmin }) => (
 	<Panel id={id}>
-		<Tappable onDoubleClickCapture={go} data-to="settings" >
-		<PanelHeader left={<PanelHeaderButton onClick={go} data-to="settings" ><Icon24Settings/></PanelHeaderButton>}>Каталог скинов</PanelHeader>
-		</Tappable>
-		<Group title="User Data Fetched with VK Bridge">
+		<PanelHeader onClick={onAdmin} left={<PanelHeaderButton onClick={go} data-to="settings" ><Icon24Settings/></PanelHeaderButton>}>Каталог скинов</PanelHeader>
+		<Group title="Группа">
 		<Cell
                   before={<Avatar src="https://sun9-40.userapi.com/c855032/v855032297/ea70/sfIJ0RABti0.jpg" size={64} />}
                   size="l"
@@ -26,18 +25,8 @@ const Home = ({ id, go }) => (
                     <div style={{ display: 'flex' }}>
                       <Button disabled onClick={bridge.send("VKWebAppJoinGroup", {"group_id": 95380950})} size="m">Подписаться</Button>
                     </div>
-                  }
-                >
-                  Nebulous</Cell>
+                  } >Nebulous</Cell>
 		</Group>
-
-		{/* <Group title="Navigation Example">
-			<Div>
-				<Button  size="xl" level="2" onClick={go} data-to="persik">
-					Пока ничего не делает
-				</Button>
-			</Div>
-		</Group> */}
     <Group header={<Header mode="secondary">Выберите категорию</Header>}>
       <CellButton onClick={go} data-to="def_skins" before={<Icon24Gallery />}>Обычные скины</CellButton>
       <CellButton onClick={go} data-to="pets" before={<Icon28GhostOutline width={24} height={24} />}>Питомцы</CellButton>
