@@ -10,12 +10,12 @@ import "@vkontakte/vkui/dist/vkui.css";
 const TestFeed = ({ id, go, main_skin}) => (
 	<Panel id={id}>
 		<PanelHeader left={<PanelHeaderBack onClick={go} data-to="home"/>}>Обычные скины</PanelHeader>
- {main_skin.map(skin => (
-<Div key={skin.id}>
+ {main_skin.map(approved => (
+<Div key={approved.id}>
  <Banner style={{ blockSize: 80, marginBottom: 30 }} size="l"
-        before={<Avatar size={96} mode="image" src={skin.image} />}
-        header={<React.Fragment>Предложил: {skin.nickname}</React.Fragment>}
-        subheader={<React.Fragment>ID игрока: {skin.player_id}<br/>Категория: {skin.category}</React.Fragment>}
+        before={<Avatar size={96} mode="image" src={approved.image} />}
+        header={<React.Fragment>Предложил: {approved.nickname}</React.Fragment>}
+        subheader={<React.Fragment>ID игрока: {approved.player_id}<br/>Категория: {approved.category}</React.Fragment>}
               />
 </Div>
 ))}

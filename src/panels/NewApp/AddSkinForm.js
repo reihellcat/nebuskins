@@ -1,115 +1,85 @@
-import React from 'react';
+import React, { useEffect } from "react";
 import firebase from 'firebase';
-import PropTypes from 'prop-types';
-import { Button, Div, Input, Select, File, Checkbox, Link, FormLayout, PanelHeaderBack, PanelHeader, Panel } from '@vkontakte/vkui';
-import '@vkontakte/vkui/dist/vkui.css';
+import {app} from 'C:/Users/Павел/Desktop/vkapp/nebuskins/src/firebase.js';
+import { Button, Div, Input, Select, File, FormLayout, PanelHeaderBack, PanelHeader, Panel } from '@vkontakte/vkui';
+
+import Icon24Camera from '@vkontakte/icons/dist/24/camera';
 
 
-function AddSkinForm({ id, go, fetchedUser }) {
-  const [skins, setSkins] = React.useState([])
-  const [newSkinNickname, setNewSkinNickname] = React.useState()
-  const [newPlayerID, setNewPlayerID] = React.useState()
-  const [newCategory, setNewCategory] = React.useState()
+const db = app.firestore();
 
-  React.useEffect(() => {
-      const fetchData = async () => {
-          const db = firebase.firestore()
-          const data = await db.collection("skins").get()
-          setSkins(data.docs.map(doc => doc.data()))
+function AddSkinForm({id, go, onGoHome}) {
+  const [fileUrl, setFileUrl] = React.useState(null);
+  const [nickname, setNickname] = React.useState([])
+  const [playerID, setPlayerID] = React.useState()
+  const [category, setCategory] = React.useState()
+  const [request, setRequest] = React.useState([]);
 
-      }
-      fetchData()
-  }, [])
+  const onFileChange = async (e) => {
+    const file = e.target.files[0];
+    const storageRef = app.storage().ref();
+    const fileRef = storageRef.child(file.name);
+    await fileRef.put(file);
+    setFileUrl(await fileRef.getDownloadURL());
+  };
 
-const onCreate = () => {
-  const db = firebase.firestore()
-  db.collection('skins').doc(newPlayerID).set({nickname: newSkinNickname, player_id: newPlayerID,
-  category: newCategory, user:`${fetchedUser.first_name} ${fetchedUser.last_name}`, user_id:`${fetchedUser.id}`})
-  }
-  return(
-<Panel id={id}>
-		<PanelHeader left={<PanelHeaderBack onClick={go} data-to="add_skin"/>}>Предложить</PanelHeader>
-        <Div>
-         <FormLayout>
-            <Input maxLength="16" top="Введите ваш никнейм" value={newSkinNickname} onChange={(e) => setNewSkinNickname(e.target.value)} placeholder="Dit"/>
-            <Input  maxLength="8" top="Введите ваш игровой ID" value={newPlayerID} onChange={(e) => setNewPlayerID(e.target.value)} type="tel" placeholder="675"/>
-            <Select  top="Категория" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} placeholder="Выберите категорию скина">
-              <option value="Обычные скины">Обычные скины</option>
-             <option value="Питомцы">Питомцы</option>
-              <option value="Частицы">Частицы</option>
-            </Select>
-             <File type='image' top="Загрузите фото скина" size="l">Открыть галерею</File>
-             <Checkbox >Я согласен со всем, что вы <Link>там</Link> понаписали</Checkbox>
-             <Button mode="commerce" size="xl" onClick={onCreate} >Отправить</Button>
-             </FormLayout>
- </Div>
-	</Panel>
-  )
-  }
-// const AddSkinForm = ({ id, go}) => (
-// 	<Panel id={id}>
-// 		<PanelHeader left={<PanelHeaderBack onClick={go} data-to="add_skin"/>}>Обычные скины</PanelHeader>
-//         <Div>
-//          <FormLayout>
-//             <Input maxLength="16" top="Введите ваш никнейм" value={newSkinNickname} placeholder="Paykan, hellcat, Legenda, Elly, Metalcore"/>
-//             <Input  maxLength="8" top="Введите ваш игровой ID" type="tel" placeholder="5562478"/>
-//             <Select  top="Категория" placeholder="Выберите категорию скина">
-//               <option value="Обычные скины">Обычные скины</option>
-//              <option value="Питомцы">Питомцы</option>
-//               <option value="Частицы">Частицы</option>
-//             </Select>
-//             <ImageUploaderSkins/>
-//              <File type='image' top="Загрузите фото скина" size="l">Открыть галерею</File>
-//              <Checkbox >Я согласен со всем, что вы <Link>там</Link> понаписали</Checkbox>
-//              <Button  size="xl"  >Отправить</Button>
-//              </FormLayout>
-//  </Div>
-// 	</Panel>
-// )
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const nickname = e.target.value;
+    if (!nickname) {
+      return;
+    }
+  };
 
-AddSkinForm.propTypes = {
-	id: PropTypes.string.isRequired,
-  go: PropTypes.func.isRequired,
-  fetchedUser: PropTypes.shape({
-		first_name: PropTypes.string,
-		last_name: PropTypes.string,
-})
-};
-
-export default AddSkinForm;
-
-// function AddSkinForm() {
-//     const [skins, setSkins] = React.useState([])
-//     const [newSkinNickname, setNewSkinNickname] = React.useState()
-//     const [newPlayerID, setNewPlayerID] = React.useState()
-//     const [newCategory, setNewCategory] = React.useState()
+  const onCreate = async () => {
+        const db = firebase.firestore()
+        await db.collection('request').doc(playerID).set({nickname: nickname, player_id: playerID,
+        category: category, image: fileUrl});
+        };
     
 
-//     React.useEffect(() => {
-//         const fetchData = async () => {
-//             const db = firebase.firestore()
-//             const data = await db.collection("skins").get()
-//             setSkins(data.docs.map(doc => doc.data()))
-//         }
-//         fetchData()
-//     }, [])
+  useEffect(() => {
+    const fetchRequest = async () => {
+      const requestCollection = await db.collection("request").get();
+      setRequest(
+        requestCollection.docs.map((doc) => {
+          return doc.data();
+        })
+      );
+    };
+    fetchRequest();
+  }, []);
 
-   
-//     return (
-//         <Div>
-//         <FormLayout>
-//             <Input status={ newSkinNickname ? 'valid' : 'error'} maxLength="16" top="Введите ваш никнейм" placeholder="Paykan, hellcat, Legenda, Elly, Metalcore" value={newSkinNickname} onChange={(e) => setNewSkinNickname(e.target.value)}/>
-//             <Input status={ newPlayerID ? 'valid' : 'error'} maxLength="8" top="Введите ваш игровой ID" type="tel" placeholder="5562478" value={newPlayerID} onChange={(e) => setNewPlayerID(e.target.value)}/>
-//             <Select status={ newCategory ? 'valid' : 'error'} top="Категория" placeholder="Выберите категорию скина" value={newCategory} onChange={(e) => setNewCategory(e.target.value)} >
-//               <option value="Обычные скины">Обычные скины</option>
-//               <option value="Питомцы">Питомцы</option>
-//               <option value="Частицы">Частицы</option>
-//             </Select>
-//             <ImageUploaderSkins/>
-//             {/* <File type='image' top="Загрузите фото скина" size="l">Открыть галерею</File> */}
-//             <Checkbox >Я согласен со всем, что вы <Link>там</Link> понаписали</Checkbox>
-//             <Button status={ newCategory ? 'active' : 'disabled'} size="xl" onClick={onCreate}  >Отправить</Button>
-//             </FormLayout>
-// </Div>
-//     );
-// }
+  return (
+    <Panel id={id}>
+        <PanelHeader left={<PanelHeaderBack onClick={go} data-to="add_skin"/>}>Предложить</PanelHeader>
+      <Div>
+          <FormLayout>
+             <Input maxLength="16" top="Введите ваш никнейм" value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="Dit"/>
+             <Input  maxLength="8" top="Введите ваш игровой ID" value={playerID} onChange={(e) => setPlayerID(e.target.value)} type="tel" placeholder="675"/>
+             <Select  top="Категория" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Выберите категорию скина">
+               <option value="Обычные скины">Обычные скины</option>
+               <option value="Питомцы">Питомцы</option>
+               <option value="Частицы">Частицы</option>
+             </Select>
+             <File type='file' top="Загрузите ваше фото" onChange={onFileChange} before={<Icon24Camera />} controlSize="l">
+          Открыть галерею
+        </File>
+              <Button mode="commerce" size="xl" onClick={(e) => {onSubmit(e); onCreate(); onGoHome(e);}} data-to="home" >Отправить</Button>
+              </FormLayout>
+              <ul>
+        {request.map((playerID) => {
+          return (
+            <li key={playerID.nickname}>
+              <img width="100" height="100" src={playerID.image} alt={playerID.nickname} />
+              <p>{playerID.nickname}</p>
+            </li>
+          );
+        })}
+      </ul>
+  </Div>
+    </Panel>
+  );
+}
+
+export default AddSkinForm;
