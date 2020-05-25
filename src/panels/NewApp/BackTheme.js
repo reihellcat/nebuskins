@@ -1,5 +1,6 @@
 import React from 'react';
 import firebase from 'firebase';
+// eslint-disable-next-line
 import PropTypes from 'prop-types';
 import { PanelHeader, Panel, PanelHeaderBack, Headline } from '@vkontakte/vkui';
 import "@vkontakte/vkui/dist/vkui.css";

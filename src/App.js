@@ -7,7 +7,7 @@ import connect from '@vkontakte/vk-connect';
 import firebase from './firebase';
 
 import Home from './panels/NewApp/Home';
-import TestFeed from './panels/NewApp/TestFeed';
+import TestFeed from './panels/NewApp/DefaultSkins';
 import Settings from './panels/NewApp/Settings';
 import AddSkin from './panels/NewApp/AddSkin';
 import AddSkinForm from './panels/NewApp/AddSkinForm';
@@ -15,6 +15,7 @@ import Pets from './panels/NewApp/Pets';
 import BackTheme from './panels/NewApp/BackTheme';
 import Admin from './panels/NewApp/Admin';
 import Thanks from './panels/NewApp/Thanks';
+import DefaultSkins from './panels/NewApp/DefaultSkins';
 
 
 const App = () => {
@@ -96,9 +97,9 @@ const App = () => {
     setActivePanel('thanks_panel');
   };
 
-  const AllowMessage = e => {
-    bridge.send("VKWebAppAllowMessagesFromGroup", {"group_id": 95380950, "key": "7kbjmr8gbc"})
-  };
+  // const AllowMessage = e => {
+  //   bridge.send("VKWebAppAllowMessagesFromGroup", {"group_id": 95380950, "key": "7kbjmr8gbc"})
+  // };
   // const onDelete = () => {
   //   const db = firebase.firestore()
   //   db.collection('request').doc().delete()
@@ -109,14 +110,14 @@ const App = () => {
     <ConfigProvider scheme={scheme} >
 		<View activePanel={activePanel}>
 			<Home id='home' go={go} />
-			<TestFeed id='def_skins' main_skin={main_skin} go={go} />
+			<DefaultSkins id='def_skins' main_skin={main_skin} go={go} />
       <Settings id="settings" ShareGroup={ShareGroup} onAdmin={onAdmin} UpdateTheme={UpdateTheme} fetchedUser={fetchedUser} go={go} />
       <AddSkin id="add_skin" go={go}/>
       <AddSkinForm id="add_skin_form" onGoHome={onGoHome} fetchedUser={fetchedUser}  go={go} />
       <Pets id="pets" go={go} />
       <BackTheme id="back_theme" go={go} />
       <Admin id="admin_panel" main_skin={main_skin} go={go}/>
-      <Thanks id="thanks_panel" AllowMessage={AllowMessage} go={go} />
+      <Thanks id="thanks_panel" go={go} />
 		</View>
     </ConfigProvider>
   );

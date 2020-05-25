@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import bridge from '@vkontakte/vk-bridge';
-import {Panel, PanelHeader, CellButton, Group, Avatar, Header, PanelHeaderButton} from '@vkontakte/vkui';
+import {Panel, PanelHeader, CellButton, Group, Header, PanelHeaderButton, SimpleCell} from '@vkontakte/vkui';
 import "@vkontakte/vkui/dist/vkui.css";
 
 
@@ -23,12 +22,12 @@ const Home = ({ id, go }) => (
                   } >Nebulous</Cell>
 		</Group> */}
     <Group header={<Header mode="secondary">Выберите категорию</Header>}>
-      <CellButton onClick={go} data-to="def_skins" before={<Icon24Gallery />}>Обычные скины</CellButton>
+      <SimpleCell onClick={go} data-to="def_skins" before={<Icon24Gallery />}>Обычные скины</SimpleCell>
       <CellButton onClick={go} data-to="pets" before={<Icon28GhostOutline width={24} height={24} />}>Питомцы</CellButton>
       <CellButton disabled before={<Icon24FavoriteOutline />}>Частицы</CellButton>
 	  <CellButton onClick={go} data-to="back_theme" before={<Icon24Attachments />}>Собственный фон</CellButton>
     </Group>
-	<Group>
+	<Group header={<Header mode="secondary">Другое</Header>}>
       <CellButton onClick={go} data-to="add_skin" before={<Icon28WriteOutline  width={24} height={24} />}>Предложить скин</CellButton>
     </Group>
 	</Panel>

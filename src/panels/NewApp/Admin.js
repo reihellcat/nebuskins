@@ -19,7 +19,7 @@ const Admin = ({ id, go, fetchedUser, main_skin, onDelete }) => (
         {main_skin.map(request => (
 <Div key={request.id}>
  <Banner style={{ blockSize: 115 }} size="l"
-        before={<Avatar size={96} mode="image" />}
+        before={<Avatar size={96} mode="image" src={request.image} />}
         header={<React.Fragment>Предложил: {request.nickname}</React.Fragment>}
         subheader={<React.Fragment>ID игрока: {request.player_id}<br/>Категория: {request.category}</React.Fragment>}
 		actions={

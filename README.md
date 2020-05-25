@@ -1,4 +1,3 @@
-# nebuskins
- Community app
-vk.com/nebulous
-vk.com/egormayor
+# Nebulous Skins App
+ Community app for VK group - vk.com/nebulous
+Creator - vk.com/egormayor
